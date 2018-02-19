@@ -31,7 +31,7 @@
 			// Array Format: Name, P, M, F, A, D, Special
 			var originalUnits = [
 				{ Id: 1, Name: "Lt Inf", Cost: 1, Presence: 1, Move: 3, Fire: 3, Armor: 1, Defense: 4, Special: "Dig In, Alert, Infantry" },
-				{ Id: 2, Name: "Mob Inf", Cost: 1, Presence: 1, Move: 5, Fire: 3, Armor: 1, Defense: 2, Special: "Rapid, Alert, Infantry" },
+				{ Id: 2, Name: "Mob Inf", Cost: 2, Presence: 2, Move: 5, Fire: 3, Armor: 1, Defense: 2, Special: "Rapid, Alert, Infantry" },
 				{ Id: 3, Name: "Hvy Inf", Cost: 2, Presence: 2, Move: 3, Fire: 4, Armor: 3, Defense: 3, Special: "Dig In, Alert, Infantry" },
 				{ Id: 4, Name: "AB Inf", Cost: 2, Presence: 2, Move: 3, Fire: 3, Armor: 1, Defense: 3, Special: "Dig In, Deep Deployment, Alert, Infantry" },
 				{ Id: 5, Name: "SF", Cost: 3, Presence: 3, Move: 3, Fire: 3, Armor: 1, Defense: 2, Special: "Dig In, Deep Deployment, Guide Fire, Alert, Infantry" },
@@ -55,8 +55,9 @@
 				{ Id: 7, Name: "Hvy Cav", Lt_Inf: 1, Mob_Inf: 0, Hvy_Inf: -1, AB_Inf: 2, SF: 1, Lt_Cav: -1, Hvy_Cav: 0, Lt_Arty: 1, Armd_Arty: -1, Recon: 0 },
 			];
 
-			$("#hqSelect").click(function () {
+			$("#changeHq").click(function () {
 				$("#mytable tbody").text("");
+				$(calculatePrescense);
 
 				$(units).each(function () {
 					this.Cost = this.Presence;
@@ -119,9 +120,7 @@
 
 					}
 
-					//console.log("++++++ " + this.Name + " pre: " + this.Cost);
 					this.Cost = this.Cost + cost;
-					//console.log("++++++ post: " + this.Cost);
 				});
 			});
 
@@ -152,10 +151,10 @@
 						row += "<span class=\"td-name\" id=\"name-" + rowCount + "\">" + this.Name + "</span></td>";
 						row += "<td><span class=\"td-cost\" id=\"cost-" + rowCount + "\">" + this.Cost + "</span></td>";
 						row += "<td><span class=\"td-presence\" id=\"presence-" + rowCount + "\">" + this.Presence + "</span></td>";
-						row += "<td><span class=\"td-move\" id=\"move-" + rowCount + "\">" + this.Move + "</span><span><button>+</button><button>-</button></span></td>";
-						row += "<td><span class=\"td-fire\" id=\"fire-" + rowCount + "\">" + this.Fire + "</span><span><button>+</button><button>-</button></span></td>";
-						row += "<td><span class=\"td-armor\" id=\"armor-" + rowCount + "\">" + this.Armor + "</span><span><button>+</button><button>-</button></span></td>";
-						row += "<td><span class=\"td-defense\" id=\"defense-" + rowCount + "\">" + this.Defense + "</span><span><button>+</button><button>-</button></span></td>";
+						row += "<td><span class=\"td-move\" id=\"move-" + rowCount + "\">" + this.Move + "</span><br><span><button>+</button><button>-</button></span></td>";
+						row += "<td><span class=\"td-fire\" id=\"fire-" + rowCount + "\">" + this.Fire + "</span><br><span><button>+</button><button>-</button></span></td>";
+						row += "<td><span class=\"td-armor\" id=\"armor-" + rowCount + "\">" + this.Armor + "</span><br><span><button>+</button><button>-</button></span></td>";
+						row += "<td><span class=\"td-defense\" id=\"defense-" + rowCount + "\">" + this.Defense + "</span><br><span><button>+</button><button>-</button></span></td>";
 						row += "<td><span class=\"td-special\" id=\"special-" + rowCount + "\">" + this.Special + "</span></td>";
 						row += "<td><button id=\"removeUnit-" + rowCount + "\" onclick=\"removeRow(" + rowCount + ")\">Remove Unit</button></td>";
 						row += "</tr>";
@@ -194,6 +193,7 @@
 		<select id="hqSelect">
 			<option value="0">Select HQ</option>
 		</select>
+		<button name="changeHq" id="changeHq">Change HQ. This will remove all previously selected units.</button>
 	</div>
 
 	<div>

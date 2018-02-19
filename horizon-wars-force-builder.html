@@ -39,11 +39,48 @@
 				{ Id: 7, Name: "Hvy Cav", Cost: 3, Presence: 3, Move: 4, Fire: 5, Armor: 5, Defense: 1, Special: "Rapid, Vanguard, Vehicle" },
 				{ Id: 8, Name: "Lt Arty", Cost: 2, Presence: 2, Move: 3, Fire: 4, Armor: 2, Defense: 2, Special: "Cumbersome, Deep Deployment, Indirect Fire, Infantry" },
 				{ Id: 9, Name: "Armd Arty", Cost: 3, Presence: 3, Move: 3, Fire: 7, Armor: 3, Defense: 2, Special: "Cumbersome, Rapid, Indirect Fire, Vehicle" },
-				{ Id: 10, Name: "Recon", Cost: 2, Presence: 2, Move: 5, Fire: 1, Armor: 4, Defense: 1, Special: "Deep Deployment, Guide Fire, Alert, Infantry" }
+				{ Id: 10, Name: "Recon", Cost: 2, Presence: 2, Move: 5, Fire: 1, Armor: 4, Defense: 1, Special: "Deep Deployment, Guide Fire, Alert, Infantry" },
+				{ Id: 11, Name: "Light Mech", Cost: 1, Presence: 1, Move: 0, Fire: 0, Armor: 0, Defense: 0, Special: "" },
+				{ Id: 12, Name: "Medium Mech", Cost: 2, Presence: 2, Move: 0, Fire: 0, Armor: 0, Defense: 0, Special: "" },
+				{ Id: 13, Name: "Heavy Mech", Cost: 3, Presence: 3, Move: 0, Fire: 0, Armor: 0, Defense: 0, Special: "" },
+				{ Id: 13, Name: "Fighter-Bomber", Cost: 3, Presence: 3, Move: 0, Fire: 0, Armor: 0, Defense: 0, Special: "" },
+				{ Id: 13, Name: "Strike Fighter", Cost: 2, Presence: 2, Move: 0, Fire: 0, Armor: 0, Defense: 0, Special: "" },
+				{ Id: 13, Name: "Fighter", Cost: 1, Presence: 1, Move: 0, Fire: 0, Armor: 0, Defense: 0, Special: "" }
 			];
 
 			var units = originalUnits.slice(0);
 			//console.log(units);
+
+			var upgrades = [
+				{ Id: 1, Name: "Antigrav", Cost: "0" },
+				{ Id: 1, Name: "Strike", Cost: "0" },
+				{ Id: 1, Name: "Traps", Cost: "0" },
+				{ Id: 1, Name: "Ace", Cost: "1" },
+				{ Id: 1, Name: "Assisted Targeting", Cost: "1" },
+				{ Id: 1, Name: "Extended range - Short", Cost: "" },
+				{ Id: 1, Name: "Extended range - Medium", Cost: "2" },
+				{ Id: 1, Name: "Extended range - Long", Cost: "2" },
+				{ Id: 1, Name: "Assassin Strike", Cost: "1" },
+				{ Id: 1, Name: "Indirect Fire", Cost: "1" },
+				{ Id: 1, Name: "Anti-aircraft fire", Cost: "0" },
+				{ Id: 1, Name: "Agile Frame", Cost: "1" },
+				{ Id: 1, Name: "Assault Rig", Cost: "1" },
+				{ Id: 1, Name: "Drop Harness", Cost: "2" },
+				{ Id: 1, Name: "Engineer", Cost: "1" },
+				{ Id: 1, Name: "Fragmentation Screen", Cost: "1" },
+				{ Id: 1, Name: "Jump Jets", Cost: "1" },
+				{ Id: 1, Name: "Minelayer Upgrade", Cost: "1" },
+				{ Id: 1, Name: "Stealth Suite", Cost: "2" },
+				{ Id: 1, Name: "CHQ", Cost: "0" },
+				{ Id: 1, Name: "Squadron Commander", Cost: "1" },
+				{ Id: 1, Name: "Advanced ejection system", Cost: "1" },
+				{ Id: 1, Name: "Satellite lock-on", Cost: "2" },
+				{ Id: 1, Name: "Antigrav", Cost: "3" },
+				{ Id: 1, Name: "Rotary", Cost: "1" },
+				{ Id: 1, Name: "Vertical Thrusters", Cost: "1" },
+				{ Id: 1, Name: "Light Transport", Cost: "1" },
+				{ Id: 1, Name: "Heavy Transport", Cost: "2" }
+			]
 
 			var hqModifiers = [
 				{ Id: 1, Name: "Lt Inf", Lt_Inf: 0, Mob_Inf: 0, Hvy_Inf: 1, AB_Inf: -1, SF: 1, Lt_Cav: 1, Hvy_Cav: 1, Lt_Arty: -1, Armd_Arty: 2, Recon: -1 },
@@ -113,11 +150,6 @@
 						case "Recon":
 							cost = hqModifier.Recon;
 							break;
-
-						default:
-							console.log("Unknown unit type: " + this.Name);
-							break;
-
 					}
 
 					this.Cost = this.Cost + cost;
@@ -147,15 +179,26 @@
 				var row = "";
 				$(units).each(function () {
 					if (this.Id == selectedVal) {
+						var specialSelect = "<select id=\"specialSelect-" + rowCount + "\" >";
+						specialSelect += "<option id=0>Select Special</option>";
+						$(upgrades).each(function () {
+							specialSelect += "<option id=" + this.Id + ">" + this.Name + "</option>";
+						});
+						specialSelect += "</select>";
+
+						console.log(specialSelect);
+
+
 						row += "<tr id=\"rowId-" + rowCount + "\"><td>";
 						row += "<span class=\"td-name\" id=\"name-" + rowCount + "\">" + this.Name + "</span></td>";
 						row += "<td><span class=\"td-cost\" id=\"cost-" + rowCount + "\">" + this.Cost + "</span></td>";
 						row += "<td><span class=\"td-presence\" id=\"presence-" + rowCount + "\">" + this.Presence + "</span></td>";
-						row += "<td><span class=\"td-move\" id=\"move-" + rowCount + "\">" + this.Move + "</span><span><button>+</button><button>-</button></span></td>";
-						row += "<td><span class=\"td-fire\" id=\"fire-" + rowCount + "\">" + this.Fire + "</span><span><button>+</button><button>-</button></span></td>";
-						row += "<td><span class=\"td-armor\" id=\"armor-" + rowCount + "\">" + this.Armor + "</span><span><button>+</button><button>-</button></span></td>";
-						row += "<td><span class=\"td-defense\" id=\"defense-" + rowCount + "\">" + this.Defense + "</span><span><button>+</button><button>-</button></span></td>";
+						row += "<td><span class=\"td-move\" id=\"move-" + rowCount + "\">" + this.Move + "</span><span><button onclick=\"increaseStat('move'," + rowCount + ")\">+</button><button onclick=\"decreaseStat('move'," + rowCount + ")\">-</button></span></td>";
+						row += "<td><span class=\"td-fire\" id=\"fire-" + rowCount + "\">" + this.Fire + "</span><span><button onclick=\"increaseStat('fire'," + rowCount + ")\">+</button><button onclick=\"decreaseStat('fire'," + rowCount + ")\">-</button></span></td>";
+						row += "<td><span class=\"td-armor\" id=\"armor-" + rowCount + "\">" + this.Armor + "</span><span><button onclick=\"increaseStat('armor'," + rowCount + ")\">+</button><button onclick=\"decreaseStat('armor'," + rowCount + ")\">-</button></span></td>";
+						row += "<td><span class=\"td-defense\" id=\"defense-" + rowCount + "\">" + this.Defense + "</span><span><button onclick=\"increaseStat('defense'," + rowCount + ")\">+</button><button onclick=\"decreaseStat('defense'," + rowCount + ")\">-</button></span></td>";
 						row += "<td><span class=\"td-special\" id=\"special-" + rowCount + "\">" + this.Special + "</span></td>";
+						row += "<td>" + specialSelect + "</td > ";
 						row += "<td><button id=\"removeUnit-" + rowCount + "\" onclick=\"removeRow(" + rowCount + ")\">Remove Unit</button></td>";
 						row += "</tr>";
 					};
@@ -181,6 +224,16 @@
 			});
 
 			$("#forcePresenceTotal").text(prescenseTotal);
+		}
+
+		function increaseStat(fieldType, fieldId) {
+			var fieldValue = parseInt($("#" + fieldType + "-" + fieldId).text()) + 1;
+			$("#" + fieldType + "-" + fieldId).text(fieldValue);
+		}
+
+		function decreaseStat(fieldType, fieldId) {
+			var fieldValue = parseInt($("#" + fieldType + "-" + fieldId).text()) - 1;
+			$("#" + fieldType + "-" + fieldId).text(fieldValue);
 		}
 
 	</script>
@@ -215,6 +268,7 @@
 					<th>A</th>
 					<th>D</th>
 					<th>Special</th>
+					<th>Unit Options</th>
 					<th>Remove Unit</th>
 				</tr>
 			</thead>
@@ -223,7 +277,7 @@
 			<tfoot>
 				<tr>
 					<th>Total:</th>
-					<th colspan="8">
+					<th colspan="9">
 						<span id="forcePresenceTotal">0</span>
 					</th>
 				</tr>

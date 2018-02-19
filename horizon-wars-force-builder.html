@@ -63,11 +63,12 @@
 				});
 
 				var hqSelected = $("#hqSelect option:selected").val();
-				console.log("hqSelected: " + hqSelected);
 
 				if (hqSelected == 0) {
 					return;
 				}
+
+				console.log("hqSelected: " + hqSelected);
 
 				var hqModifier;
 				$(hqModifiers).each(function () {
